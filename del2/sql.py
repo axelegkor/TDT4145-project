@@ -1,10 +1,14 @@
 import sqlite3
-con = sqlite3.connect("kaffe.db")
 
-cursor = con.cursor()
+def main():
+    con = sqlite3.connect("kaffe.db")
 
-# Executions
-cursor.execute("SELECT Bruker.Fornavn FROM Bruker")
+    cursor = con.cursor()
 
+    # Executions
+    cursor.execute("SELECT Bruker.Fornavn FROM Bruker")
 
-con.close()
+    con.close()
+
+if __name__ == '__main__':
+    main()
