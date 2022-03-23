@@ -80,6 +80,13 @@ def main():
     con = sqlite3.connect("kaffe.db")
     cursor = con.cursor()
 
+    print("""Choose between the following actions:\n
+    1. Add a coffeetasting to the database\n
+    2. See how many unique coffees each user has tasted\n
+    3. See the price and point score of different coffees, sorted after which coffees offer the best value\n
+    4. Search after coffees by keyword\n
+    5. Search after coffees by country and method
+    """)
     choice = int(input("Choose a number: "))
     print()
 
@@ -97,7 +104,8 @@ def main():
             print(i[1], "burnt at", i[0] + ":", i[2], "NOK,", i[3], "points")
 
     elif choice == 4:
-        us4 = filter_descriptions(cursor, 'floral').fetchall()
+        key = input("Search: ")
+        us4 = filter_descriptions(cursor, key).fetchall()
         for i in us4:
             print(i[1], "burnt at", i[0])
 
