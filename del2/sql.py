@@ -97,7 +97,7 @@ def main():
             print(i[1], "burnt at", i[0] + ":", i[2], "NOK,", i[3], "points")
 
     elif choice == 4:
-        us4 = filter_descriptions(cursor, 'Wow').fetchall()
+        us4 = filter_descriptions(cursor, 'floral').fetchall()
         for i in us4:
             print(i[1], "burnt at", i[0])
 
