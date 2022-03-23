@@ -1,3 +1,4 @@
+from asyncio.windows_events import NULL
 import sqlite3
 
 
@@ -51,7 +52,7 @@ def filter_descriptions(cursor, key):
 
 
 # User story 5
-def filter_methods_and_countries(cursor):
+def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
     return cursor.execute("""
     
         SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
@@ -69,10 +70,12 @@ def filter_methods_and_countries(cursor):
         INNER JOIN Foredlingsmetode
         ON Kaffeparti.ForedlingsmetodeId = Foredlingsmetode.Id
         
-        WHERE (Land.Navn = 'Rwanda' OR Land.Navn = 'Colombia')
-        AND Foredlingsmetode.Beskrivelse != 'Vasket'    
+        WHERE (Land.Navn LIKE '{0}' OR Land.Navn LIKE '{1}' OR Land.Navn LIKE '{2}')
+        AND Foredlingsmetode.Navn NOT LIKE '{3}' AND Foredlingsmetode.Navn NOT LIKE '{4}' AND Foredlingsmetode.Navn NOT LIKE '{5}'
+        
     
-    """)
+    """.format(country1, country2, country3, method1, method2, method3))
+    # AND (Foredlingsmetode.Beskrivelse!=%s AND Foredlingsmetode.Beskrivelse!=%s AND Foredlingsmetode.Beskrivelse!=%s)
 
 
 def main():
@@ -80,14 +83,14 @@ def main():
     con = sqlite3.connect("kaffe.db")
     cursor = con.cursor()
 
-    print("""Choose between the following actions:\n
-    1. Add a coffeetasting to the database\n
-    2. See how many unique coffees each user has tasted\n
-    3. See the price and point score of different coffees, sorted after which coffees offer the best value\n
-    4. Search after coffees by keyword\n
-    5. Search after coffees by country and method
+    print("""Velg mellom en av følgende handlinger:\n
+    1. Legg til en kaffesmaking i databasen\n
+    2. Se hvor mange unike kaffer hver bruker har smakt\n
+    3. Se de ulike kaffenes pris og poeng, sortert etter hvilke kaffer som gir best verdi for pengene\n
+    4. Søk etter kaffer ved søkeord\n
+    5. Søk etter kaffer ved ønskede land og uønskede foredlingsmetoder
     """)
-    choice = int(input("Choose a number: "))
+    choice = int(input("Velg et tall: "))
     print()
 
     if choice == 1:
@@ -101,18 +104,31 @@ def main():
     elif choice == 3:
         us3 = best_deal(cursor).fetchall()
         for i in us3:
-            print(i[1], "burnt at", i[0] + ":", i[2], "NOK,", i[3], "points")
+            print(i[1], "brent av", i[0] + ":", i[2], "NOK,", i[3], "poeng")
 
     elif choice == 4:
-        key = input("Search: ")
+        key = input("Søk: ")
         us4 = filter_descriptions(cursor, key).fetchall()
         for i in us4:
-            print(i[1], "burnt at", i[0])
+            print(i[1], "brent av", i[0])
 
     elif choice == 5:
-        us5 = filter_methods_and_countries(cursor).fetchall()
+        countries = input(
+            "Velg opp til tre land å inkludere (på formatet: Land1, Land2, Land3): ")
+        methodexcluded = input(
+            "Velg opp til tre foredlingsmetoder å ekskludere (på formatet: Metode1, Metode2, Metode3): ")
+        countriesList = countries.split(", ")
+        for i in range(3-len(countriesList)):
+            countriesList.append(NULL)
+
+        methodexcludedList = methodexcluded.split(", ")
+        for i in range(3-len(methodexcludedList)):
+            methodexcludedList.append(NULL)
+
+        us5 = filter_methods_and_countries(
+            cursor, countriesList[0], countriesList[1], countriesList[2], methodexcludedList[0], methodexcludedList[1], methodexcludedList[2]).fetchall()
         for i in us5:
-            print(i[1], "burnt at", i[0])
+            print(i[1], "brent av", i[0])
 
     con.close()
 
