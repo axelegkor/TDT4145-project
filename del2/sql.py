@@ -1,12 +1,28 @@
 import sqlite3
 
 
+# User story 2
+def tasted_count(cursor):
+    return cursor.execute("""
+        SELECT
+        Bruker.Fornavn,
+        Bruker.Etternavn,
+        COUNT(*) AS TasteCount
+
+        FROM Bruker INNER JOIN Kaffesmaking
+        ON Bruker.Epost = Kaffesmaking.BrukerEpost
+        
+        GROUP BY Bruker.Fornavn, Bruker.Etternavn
+        ORDER BY TasteCount DESC""")
+
+
 # User story 3
 def best_deal(cursor):
     return cursor.execute("""
         SELECT
         Kaffebrenneri.Navn AS Brennerinavn,
         Kaffe.Navn AS Kaffenavn,
+        Kaffe.KiloprisNOK AS Pris,
         AVG(Kaffesmaking.Poeng) AS Gjennomsnitt
         
         FROM Kaffe INNER JOIN Kaffesmaking
@@ -15,7 +31,7 @@ def best_deal(cursor):
         ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
         
         GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
-        ORDER BY Gjennomsnitt DESC 
+        ORDER BY Gjennomsnitt/Pris DESC 
     """)
 
 
@@ -60,17 +76,35 @@ def filter_methods_and_countries(cursor):
 
 
 def main():
+
     con = sqlite3.connect("kaffe.db")
     cursor = con.cursor()
 
-    us3 = best_deal(cursor).fetchall()
-    print("User story 3:\n", us3, "\n")
+    choice = int(input("Choose a number: "))
+    print()
 
-    us4 = filter_descriptions(cursor, 'Wow').fetchall()
-    print("User story 4:\n", us4, "\n")
+    if choice == 1:
+        print("Run 1")
 
-    us5 = filter_methods_and_countries(cursor).fetchall()
-    print("User story 5:\n", us5, "\n")
+    elif choice == 2:
+        us2 = tasted_count(cursor).fetchall()
+        for i in us2:
+            print(i[0], i[1] + ":", str(i[2]))
+
+    elif choice == 3:
+        us3 = best_deal(cursor).fetchall()
+        for i in us3:
+            print(i[1], "burnt at", i[0] + ":", i[2], "NOK,", i[3], "points")
+
+    elif choice == 4:
+        us4 = filter_descriptions(cursor, 'Wow').fetchall()
+        for i in us4:
+            print(i[1], "burnt at", i[0])
+
+    elif choice == 5:
+        us5 = filter_methods_and_countries(cursor).fetchall()
+        for i in us5:
+            print(i[1], "burnt at", i[0])
 
     con.close()
 
