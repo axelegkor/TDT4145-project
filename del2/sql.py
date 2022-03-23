@@ -7,13 +7,13 @@ def tasted_count(cursor):
         SELECT
         Bruker.Fornavn,
         Bruker.Etternavn,
-        COUNT(*) AS TasteCount
+        COUNT(*) AS Antall
 
         FROM Bruker INNER JOIN Kaffesmaking
         ON Bruker.Epost = Kaffesmaking.BrukerEpost
         
         GROUP BY Bruker.Fornavn, Bruker.Etternavn
-        ORDER BY TasteCount DESC""")
+        ORDER BY Antall DESC""")
 
 
 # User story 3
