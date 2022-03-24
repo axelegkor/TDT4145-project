@@ -91,15 +91,6 @@ def add_tasting(connection, cursor):
     connection.commit()
 
 
-# def main():
-#     con = sqlite3.connect("kaffe.db")
-
-#     cursor = con.cursor()
-
-#     # Executions
-#     cursor.execute("SELECT Bruker.Fornavn FROM Bruker")
-
-
 # User story 2
 def tasted_count(cursor):
     return cursor.execute("""
