@@ -1,6 +1,9 @@
 from asyncio.windows_events import NULL
 from datetime import date
 import sqlite3
+import datetime
+
+# TODO: Legg inn for kun "i år"
 
 
 # User story 1
@@ -110,8 +113,12 @@ def add_tasting(connection, cursor):
     connection.commit()
 
 
-# User story 2
 def tasted_count(cursor):
+    """User story 2
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
         SELECT
         Bruker.Fornavn,
@@ -122,11 +129,16 @@ def tasted_count(cursor):
         ON Bruker.Epost = Kaffesmaking.BrukerEpost
         
         GROUP BY Bruker.Fornavn, Bruker.Etternavn
-        ORDER BY Antall DESC""")
+        ORDER BY Antall DESC
+    """)
 
 
-# User story 3
 def best_deal(cursor):
+    """User story 3
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
         SELECT
         Kaffebrenneri.Navn AS Brennerinavn,
@@ -144,8 +156,12 @@ def best_deal(cursor):
     """)
 
 
-# User story 4
 def filter_descriptions(cursor, key):
+    """User story 4
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
         SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
         
@@ -155,12 +171,16 @@ def filter_descriptions(cursor, key):
         ON Kaffe.kaffebrenneriId = Kaffebrenneri.Id
         
         WHERE Kaffe.Beskrivelse LIKE '%{0}%'
-        OR Kaffesmaking.Smaksnotater LIKE '%{0}%' 
+        OR Kaffesmaking.Smaksnotater LIKE '%{0}%'
     """.format(key))
 
 
-# User story 5
-def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
+def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3): 
+    """User story 5
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
     
         SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
