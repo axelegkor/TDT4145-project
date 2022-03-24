@@ -137,7 +137,7 @@ def best_deal(cursor):
 # User story 4
 def filter_descriptions(cursor, key):
     return cursor.execute("""
-        SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
+        SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
         
         FROM Kaffe INNER JOIN Kaffesmaking
         ON Kaffe.Id = Kaffesmaking.KaffeId
