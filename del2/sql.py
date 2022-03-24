@@ -1,6 +1,104 @@
 from asyncio.windows_events import NULL
 import sqlite3
 
+# User story 1
+
+
+def add_tasting(connection, cursor):
+    # Login info
+    usr_epost = input("What is your e-mail? ")
+    usr_pw = input("Whar is you password? ")
+
+    # Handle if user does not exist
+    cursor.execute("SELECT Epost from Bruker WHERE Epost = :Epost", {
+                   "Epost": usr_epost})
+    result_user_epost = cursor.fetchone()
+
+    # Validate user
+    if result_user_epost:
+        cursor.execute("SELECT Passord FROM Bruker WHERE Epost = :Epost AND Passord = :Passord",
+                       {"Epost": usr_epost, "Passord": usr_pw})
+        pw = cursor.fetchone()
+
+        # Validate password
+        if not pw:
+            print("Invalid password. ")
+            return
+
+        print("Valid user.\n")
+    else:
+        print("No user with such email.")
+        return
+
+    roastery = input("What is the name of the roastery? ")
+
+    # Validate and get Id of roastery
+    cursor.execute("SELECT Id FROM Kaffebrenneri WHERE Navn = :Kaffebrenneri_navn",
+                   {"Kaffebrenneri_navn": roastery})
+    result_roastery = cursor.fetchone()
+
+    if result_roastery:
+        roastery_id = result_roastery[0]
+        print("RoasteryID is: " + str(roastery_id))
+        print(roastery + " is valid.\n")
+    else:
+        print(roastery + " does not exsist in db.")
+        return
+
+    coffee_name = input("What is the name of the coffee? ")
+
+    # Find coffee_ID based on roastery
+    cursor.execute("SELECT Id FROM Kaffe WHERE Navn = :Kaffe_Navn AND Kaffebrenneriid = :Kaffebrenneri",
+                   {"Kaffe_Navn": coffee_name, "Kaffebrenneri": roastery_id})
+    result_coffee_name = cursor.fetchone()
+
+    if result_coffee_name:
+        coffee_id = result_coffee_name[0]
+
+        print("CoffeeID is: " + str(coffee_id))
+        print(coffee_name + " is valid.\n")
+    else:
+        print(
+            "Coffee name does not exist in db or roasteryID does not match Coffee name.\n")
+        return
+
+    points = int(input("How many point do you give the coffee? "))
+
+    # Validate points, has to be int: 1-10
+    if 10 < points < 1:
+        print("Points need to be an integer between 1 and 10.")
+        return
+
+    notes = input("Coffee notes: ")
+    if not notes:
+        print("You have to add tasting notes.\n")
+        return
+
+    date = input("When did you taste the coffee? (dd.mm.yyyy) ")
+
+    cursor.execute("SELECT MAX(Id) FROM Kaffesmaking")
+    new_tasting_id = cursor.fetchone()[0] + 1
+
+    cursor.execute(
+        "INSERT INTO Kaffesmaking VALUES (?,?,?,?,?,?)",
+        (new_tasting_id, notes, points, date, usr_epost, coffee_id))
+
+    # Print last added element
+    cursor.execute("SELECT * FROM Kaffesmaking")
+    last_added = cursor.fetchall()
+    print(last_added[len(last_added) - 1])
+
+    connection.commit()
+
+
+# def main():
+#     con = sqlite3.connect("kaffe.db")
+
+#     cursor = con.cursor()
+
+#     # Executions
+#     cursor.execute("SELECT Bruker.Fornavn FROM Bruker")
+
 
 # User story 2
 def tasted_count(cursor):
@@ -94,7 +192,7 @@ def main():
     print()
 
     if choice == 1:
-        print("Run 1")
+        add_tasting(con, cursor)
 
     elif choice == 2:
         us2 = tasted_count(cursor).fetchall()
