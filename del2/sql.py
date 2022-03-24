@@ -1,13 +1,11 @@
-from asyncio.windows_events import NULL
+# from asyncio.windows_events import NULL
 import sqlite3
 
 # User story 1
-
-
 def add_tasting(connection, cursor):
     # Login info
-    usr_epost = input("What is your e-mail? ")
-    usr_pw = input("Whar is you password? ")
+    usr_epost = input("Hva er din e-mail? ")
+    usr_pw = input("Hva er ditt passord? ")
 
     # Handle if user does not exist
     cursor.execute("SELECT Epost from Bruker WHERE Epost = :Epost", {
@@ -22,15 +20,30 @@ def add_tasting(connection, cursor):
 
         # Validate password
         if not pw:
-            print("Invalid password. ")
+            print("Ugyldig passord.")
             return
 
-        print("Valid user.\n")
+        print("Gyldig bruker.\n")
     else:
-        print("No user with such email.")
-        return
+        print("Fant ingen bruker med denne e-mailen i databasen.")
+        make_new_user = input("Ønsker du å lage en ny bruker? (J/N) ")
 
-    roastery = input("What is the name of the roastery? ")
+        if make_new_user == "J":
+            first_name = input("Hva er fornavnet ditt? ")
+            surname = input("Hva er etternavnet ditt? ")
+            new_pw = input("Oppgi et passord: ")
+            cursor.execute("INSERT INTO Bruker VALUES (?,?,?,?)",
+                (usr_epost, first_name, surname, new_pw))
+            connection.commit()
+
+            cursor.execute("SELECT * FROM Bruker WHERE Epost = :Epost", 
+                {"Epost": usr_epost})
+            new_usr = cursor.fetchone()
+            print("Denne brukeren er nå lagt til databasen: " + str(new_usr) + "\n")
+        else:
+            return
+
+    roastery = input("Hva er navnet på brenneriet? ")
 
     # Validate and get Id of roastery
     cursor.execute("SELECT Id FROM Kaffebrenneri WHERE Navn = :Kaffebrenneri_navn",
@@ -39,13 +52,13 @@ def add_tasting(connection, cursor):
 
     if result_roastery:
         roastery_id = result_roastery[0]
-        print("RoasteryID is: " + str(roastery_id))
-        print(roastery + " is valid.\n")
+        print("Brenneri-ID er: " + str(roastery_id))
+        print(roastery + " er gyldig.\n")
     else:
-        print(roastery + " does not exsist in db.")
+        print(roastery + " eksisterer ikke i databasen.")
         return
 
-    coffee_name = input("What is the name of the coffee? ")
+    coffee_name = input("Hva er navnet på kaffen? ")
 
     # Find coffee_ID based on roastery
     cursor.execute("SELECT Id FROM Kaffe WHERE Navn = :Kaffe_Navn AND Kaffebrenneriid = :Kaffebrenneri",
@@ -55,26 +68,26 @@ def add_tasting(connection, cursor):
     if result_coffee_name:
         coffee_id = result_coffee_name[0]
 
-        print("CoffeeID is: " + str(coffee_id))
-        print(coffee_name + " is valid.\n")
+        print("Kaffe-ID er: " + str(coffee_id))
+        print(coffee_name + " er gyldig.\n")
     else:
         print(
-            "Coffee name does not exist in db or roasteryID does not match Coffee name.\n")
+            "Kaffenavn eksisterer ikke i databasen eller kaffebrenneri-ID stemmer ikke overens med kaffenavn.\n")
         return
 
-    points = int(input("How many point do you give the coffee? "))
+    points = int(input("Hvor mange poeng vil du gi kaffen? "))
 
     # Validate points, has to be int: 1-10
     if 10 < points < 1:
-        print("Points need to be an integer between 1 and 10.")
+        print("Poeng må være mellom 1 og 10.")
         return
 
-    notes = input("Coffee notes: ")
+    notes = input("Kaffenotater: ")
     if not notes:
-        print("You have to add tasting notes.\n")
+        print("Du må oppgi kaffenotater.\n")
         return
 
-    date = input("When did you taste the coffee? (dd.mm.yyyy) ")
+    date = input("Når smakte du kaffen? (dd.mm.åååå) ")
 
     cursor.execute("SELECT MAX(Id) FROM Kaffesmaking")
     new_tasting_id = cursor.fetchone()[0] + 1
@@ -169,7 +182,7 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
 
 def main():
 
-    con = sqlite3.connect("kaffe.db")
+    con = sqlite3.connect("/Applications/TDT4145/TDT4145_Prosjekt/del2/kaffe.db")
     cursor = con.cursor()
 
     print("""Velg mellom en av følgende handlinger:\n
