@@ -16,9 +16,8 @@ Applikasjonen startes ved å kjøre python filen `sql.py`. Ved oppstart vil bruk
 >   - Kaffenavn 	
 >   - Poeng 	
 >   - Smaksnotat 	
->   - Smaksdato 
 
-Brukerhistorie 1 starter ved at du taster inn `1` når programmet starter. Deretter blir du bedt om å logge inn ved hjelp av **Epost** og **Passord**.  Her har vi antatt at bruker må logge inn med en epost som finnes i databasen, med tilhørende passord. Ved feil passord, avsluttes programmet og man må starte på nytt. Dersom en bruker ikke finnes i databasen fra før, blir brukeren spurt om den vil lage en bruker eller avslutte programmet. Hvis brukeren lager en bruker, skal **Epost, Passord, Fornavn og Etternavn** settes inn, og det blir lagt til databasen. 
+Brukerhistorie 1 starter ved at du taster inn `1` når programmet starter, som kjører `add_tasting()`. Deretter blir du bedt om å logge inn ved hjelp av **Epost** og **Passord**.  Her har vi antatt at bruker må logge inn med en epost som finnes i databasen, med tilhørende passord. Ved feil passord, avsluttes programmet og man må starte på nytt. Dersom en bruker ikke finnes i databasen fra før, blir brukeren spurt om den vil lage en bruker eller avslutte programmet. Hvis brukeren lager en bruker, skal **Epost, Passord, Fornavn og Etternavn** settes inn, og det blir lagt til databasen. 
 
 Så blir brukeren bedt om å taste inn **Kaffebrenneri**. Dersom brenneriet ikke eksisterer i databasen, avsluttes programmet, ellers returenes kaffebrenneri-Id.  
 
@@ -26,7 +25,7 @@ Deretter bes brukeren taste inn **Kaffenavn** (LEGG TIL BILDE HER). Det sjekkes 
 
 Så skal bruker oppgi hvor mange **Poeng** den vil gi kaffeen (og det sjekkes at poeng er mellom 1 og 10). 
 
-Vi antar også at en bruker skal velge **Smaksdato**, men dersom den trykker enter, blir smaksdato satt til dagens dato ved hjelp av datetime-biblioteket i Python, i stedet for at det skal være NULL. 
+Vi antar også at brukeren ikke skal velge **Smaksdato** selv fordi det er ikke spesifisert som input i oppgavebeskrivelsen. Derfor blir smaksdato satt til dagens dato ved hjelp av datetime-biblioteket i Python, i stedet for at det skal være NULL. 
 
 Når alt av input er kommet inn, skal all info settes inn i `Kaffesmaking`-tabellen i databasen ved hjelp av følgende kode: (LEGG BILDE HER) 
 
@@ -39,7 +38,7 @@ Dersom bruker skriver inn `2` ved oppstart vil vår løsning på brukerhistorie 
 
 ### Brukerhistorie 3
 
-Dersom bruker skriver inn `3` ved oppstart vil vår løsning på brukerhistorie 3 kjøre. Dette innebærer å kjøre SQL-spørringen nedenfor gjennom funksjonen `best_deal()`, som deretter blir skrevet ut i et ryddig format til bruker. Vi må gruppere på kaffe sin unike id slik at vi kan regne ut gjennomsnittsscore på kaffen hentet fra alle kaffesmakinger. Når vi til slutt sorterer resultatet er det viktig å ta gjennomsnittet delt på kaffeprisen, da det vil si noe om hvor mye kaffen gir iforhold til prisen, noe brukerhistorien etterspør. `DESC` vil sortere synkende.  
+Dersom bruker skriver inn `3` ved oppstart vil vår løsning på brukerhistorie 3 kjøre. Dette innebærer å kjøre SQL-spørringen nedenfor gjennom funksjonen `best_deal()`, som deretter blir skrevet ut i et ryddig format til bruker. Vi må gruppere på kaffe sin unike id slik at vi kan regne ut gjennomsnittsscore på kaffen hentet fra alle kaffesmakinger. Vi antar derfor at en kaffe som ikke har kaffesmaking, ikke skal være med i resultatet, og derfor er det noen kaffer som ikke er med, fordi de ikke er smakt av brukere. Når vi til slutt sorterer resultatet er det viktig å ta gjennomsnittet delt på kaffeprisen, da det vil si noe om hvor mye kaffen gir iforhold til prisen, noe brukerhistorien etterspør. `DESC` vil sortere synkende.  
 
 ### Brukerhistorie 4
 > Input fra bruker:
@@ -54,7 +53,7 @@ For å få resultet som er beskrevet i brukerhistorie 4, skriver en «floral» v
 > - Fra ett til tre land
 > - Fra én til tre foredlingsmetoder
 
-For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet. Først tar programmet inn ett eller tre _land_ som input fra bruker, og deretter én eller tre _foredlingsmetoder_. Vi velger ut brennerinavn og kaffenavn fra `Kaffebrenneri` og `Kaffe`, og starter med å slå sammen tabellene Kaffebrenneri, Kaffe, Kaffeparti, Gård, Region, Land og til slutt Foredlingsmetode. Deretter filtrere vi på de ønskede land(ene) som ikke har de/den oppgitte foredingsmetoden(e). Til slutt skrives ut en liste av kaffen og hvilket brenneri det er brent av på et ryddig format. 
+For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet, som kjører `filter_methods_and_countries()`. Først tar programmet inn ett eller tre _land_ som input fra bruker, og deretter én eller tre _foredlingsmetoder_. Vi velger ut brennerinavn og kaffenavn fra `Kaffebrenneri` og `Kaffe`, og starter med å slå sammen tabellene Kaffebrenneri, Kaffe, Kaffeparti, Gård, Region, Land og til slutt Foredlingsmetode. Deretter filtrere vi på de ønskede land(ene) som ikke har de/den oppgitte foredingsmetoden(e). Her antar vi skal oppgi kaffer fra de landene som ikke har de oppgitte foredlingsmetodene, altså at det ikke skal være samme kaffe som kommer fra f.eks. Rwanda og Colombia og som ikke har oppgitt foredlingsmetode, men at kaffene kan være forskjellige fra de oppgite landa. Til slutt skrives ut en liste av kaffen og hvilket brenneri det er brent av på et ryddig format. 
 
 For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rwanda" og "Colombia" på land-input og "Vasket" på foredlingsmetoder-input. 
 
