@@ -1,10 +1,15 @@
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 from datetime import date
 import sqlite3
 
 
-# User story 1
 def add_tasting(connection, cursor):
+    """User story 1
+
+    :param cursor
+    :return
+    """
+
     # Login info
     usr_epost = input("Hva er din e-mail? ")
     usr_pw = input("Hva er ditt passord? ")
@@ -110,9 +115,13 @@ def add_tasting(connection, cursor):
     connection.commit()
 
 
-# User story 2
 def tasted_count(cursor):
-    return cursor.execute("""
+    """User story 2
+
+    :param cursor
+    :return
+    """
+    return cursor.execute(f"""
         SELECT
         Bruker.Fornavn,
         Bruker.Etternavn,
@@ -120,13 +129,20 @@ def tasted_count(cursor):
 
         FROM Bruker INNER JOIN Kaffesmaking
         ON Bruker.Epost = Kaffesmaking.BrukerEpost
+
+        WHERE Kaffesmaking.Smaksdato LIKE '%{date.today().year}%'
         
         GROUP BY Bruker.Fornavn, Bruker.Etternavn
-        ORDER BY Antall DESC""")
+        ORDER BY Antall DESC
+    """)
 
 
-# User story 3
 def best_deal(cursor):
+    """User story 3
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
         SELECT
         Kaffebrenneri.Navn AS Brennerinavn,
@@ -144,8 +160,12 @@ def best_deal(cursor):
     """)
 
 
-# User story 4
 def filter_descriptions(cursor, key):
+    """User story 4
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
         SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
         
@@ -155,12 +175,16 @@ def filter_descriptions(cursor, key):
         ON Kaffe.kaffebrenneriId = Kaffebrenneri.Id
         
         WHERE Kaffe.Beskrivelse LIKE '%{0}%'
-        OR Kaffesmaking.Smaksnotater LIKE '%{0}%' 
+        OR Kaffesmaking.Smaksnotater LIKE '%{0}%'
     """.format(key))
 
 
-# User story 5
 def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
+    """User story 5
+
+    :param cursor
+    :return
+    """
     return cursor.execute("""
     
         SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
