@@ -59,3 +59,20 @@ For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet
 For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rwanda" og "Colombia" på land-input og "Vasket" på foredlingsmetoder-input. 
 
 ## Resultater
+
+### Resultat fra brukerhistorie 2 
+Her bare starter man python-koden og trykekr `2`. Slik ser resultatet ut:
+
+![Bukerhistorie 2](./resultat_bilder/brukerhistorie2.png)
+
+### Resultat fra brukerhistorie 3
+På brukerhistorie 3 tenger du også å bare taste inn `3`ved oppstart av programmet. Her er resultat for brukerhistorie 3:
+
+![Brukerhistorie 3](./resultat_bilder/brukerhistorie3.png)
+
+### Resultat fra brukerhistorie 4
+Slik det er beskrevet i oppgavebeskrivelsen, vil brukeren taste inn søkerdet "floral" (men programmet kan ta inn hvilket som heltst søkeord). Slik vil det se ut med input og output: 
+
+![Resultat fra brukerhistorie 4](./resultat_bilder/brukerhistorie4.png)
+
+### Resultat fra brukerhistorie 5
