@@ -157,8 +157,8 @@ def best_deal(cursor):
         INNER JOIN Kaffebrenneri
         ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
         
-        GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
-        ORDER BY Gjennomsnitt/Pris DESC 
+        GROUP BY Kaffe.Id
+        ORDER BY Gjennomsnitt / Pris DESC 
     """)
 
 

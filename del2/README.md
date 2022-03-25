@@ -39,23 +39,23 @@ Dersom bruker skriver inn `2` ved oppstart vil vår løsning på brukerhistorie 
 
 ### Brukerhistorie 3
 
-Dersom bruker skriver inn `3` ved oppstart vil vår løsning på brukerhistorie 3 kjøre. Dette innebærer å kjøre SQL-spørringen nedenfor gjennom funksjonen `best_deal()`, som deretter blir skrevet ut i et ryddig format til bruker.
+Dersom bruker skriver inn `3` ved oppstart vil vår løsning på brukerhistorie 3 kjøre. Dette innebærer å kjøre SQL-spørringen nedenfor gjennom funksjonen `best_deal()`, som deretter blir skrevet ut i et ryddig format til bruker. Vi må gruppere på kaffe sin unike id slik at vi kan regne ut gjennomsnittsscore på kaffen hentet fra alle kaffesmakinger. Når vi til slutt sorterer resultatet er det viktig å ta gjennomsnittet delt på kaffeprisen, da det vil si noe om hvor mye kaffen gir iforhold til prisen, noe brukerhistorien etterspør. `DESC` vil sortere synkende.  
 
 ### Brukerhistorie 4
 > Input fra bruker:
 > - Nøkkel (søkeord)
 
-Brukerhistorie 4 starter man ved å taste inn `4` ved begynnelsen av programmet. Her blir brukeren først bedt om å tasten inn et **søkeord**. Vi bruker `SELECT DISTINCT` for å unngå å få likt resultat flere ganger. Deretter bruker vi  inner joins mellom tabeller `Kaffe` og `Kaffesmaking` og deretter `Kaffebrenneri`. Så filtrere vi tabellen på hvor enten Kaffebeskrivelse eller Kaffesmakingsnotater (som er attributter i henholdsvis Kaffe og Kaffesmaking) inneholder det oppgitte søkeordet. Brukeren får da en liste over alle kaffer og hvilket brenneri de er brent av. Dersom ingen kaffer eller kaffesmakinger inneholder søkeordet, printes ingenting ut til bruker. 
+Brukerhistorie 4 starter man ved å taste inn `4` ved begynnelsen av programmet. Her blir brukeren først bedt om å taste inn et _søkeord_. Vi bruker `SELECT DISTINCT` for å unngå å få likt resultat flere ganger. Deretter slår vi sammen tabellene `Kaffe`, `Kaffesmaking` og `Kaffebrenneri`. Videre filtrerer vi tabellen på om enten Kaffebeskrivelse eller Kaffesmakingsnotater (som er attributter i henholdsvis Kaffe og Kaffesmaking) inneholder det oppgitte søkeordet. Brukeren får da en liste over alle kaffer og hvilket brenneri de er brent av. Dersom ingen kaffer eller kaffesmakinger inneholder søkeordet, printes ingenting ut til bruker.
 
-For å få resultet som er beskrevet i oppgaveteksten, skriver man «floral» ved input av søkeord. 
+For å få resultet som er beskrevet i brukerhistorie 4, skriver en «floral» ved input av søkeord. 
 
 ### Brukerhistorie 5
 > Input fra bruker: 
 > - Fra ett til tre land
 > - Fra én til tre foredlingsmetoder
 
-For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet. Først tar programmet inn ett eller tre **Land** som input fra bruker og deretter én eller tre **Foredlingsmetoder**. Så velger vi brennerinavn og kaffe navn fra `Kaffebrenneri` og `Kaffe`. Vi starter med å ta inner join mellom Kaffebrenneri og Kaffe, så med Kaffeparti, Gård, Region, Land og til slutt med Foredlingsmetode. Deretter filtrere vi på de ønskede land(a) som ikke har de/den oppgitte foredingsmetoden(e). Til slutt printes en liste av kaffen og hvilket brenneri det er brent av. 
+For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet. Først tar programmet inn ett eller tre _land_ som input fra bruker, og deretter én eller tre _foredlingsmetoder_. Vi velger ut brennerinavn og kaffenavn fra `Kaffebrenneri` og `Kaffe`, og starter med å slå sammen tabellene Kaffebrenneri, Kaffe, Kaffeparti, Gård, Region, Land og til slutt Foredlingsmetode. Deretter filtrere vi på de ønskede land(ene) som ikke har de/den oppgitte foredingsmetoden(e). Til slutt skrives ut en liste av kaffen og hvilket brenneri det er brent av på et ryddig format. 
 
-Man må taste inn `Rwanda, Colombia` på land-input og `Vasket` på foredlingsmetoder-input for å få resultatene beskrevet av brukerhistorien i oppgaveteksten. 
+For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rwanda" og "Colombia" på land-input og "Vasket" på foredlingsmetoder-input. 
 
 ## Resultater
