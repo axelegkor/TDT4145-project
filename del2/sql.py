@@ -1,13 +1,15 @@
-from asyncio.windows_events import NULL
+#from asyncio.windows_events import NULL
 from datetime import date
 import sqlite3
-import datetime
-
-# TODO: Legg inn for kun "i år"
 
 
-# User story 1
 def add_tasting(connection, cursor):
+    """User story 1
+
+    :param cursor
+    :return
+    """
+
     # Login info
     usr_epost = input("Hva er din e-mail? ")
     usr_pw = input("Hva er ditt passord? ")
@@ -119,7 +121,7 @@ def tasted_count(cursor):
     :param cursor
     :return
     """
-    return cursor.execute("""
+    return cursor.execute(f"""
         SELECT
         Bruker.Fornavn,
         Bruker.Etternavn,
@@ -127,6 +129,8 @@ def tasted_count(cursor):
 
         FROM Bruker INNER JOIN Kaffesmaking
         ON Bruker.Epost = Kaffesmaking.BrukerEpost
+
+        WHERE Kaffesmaking.Smaksdato LIKE '%{date.today().year}%'
         
         GROUP BY Bruker.Fornavn, Bruker.Etternavn
         ORDER BY Antall DESC
@@ -175,7 +179,7 @@ def filter_descriptions(cursor, key):
     """.format(key))
 
 
-def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3): 
+def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
     """User story 5
 
     :param cursor
