@@ -130,7 +130,7 @@ ON Kaffeparti.ForedlingsmetodeId = Foredlingsmetode.Id
 
 WHERE (Land.Navn = ? OR Land.Navn = ? OR Land.Navn = ?)
 AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ?
-""", (country1, country2, country3, method1, method2, method3)
+""", (str(country1 or ""), str(country2 or ""), str(country3 or ""), str(method1 or ""), str(method2 or ""), str(method3 or "")))
 ```
 
 ## Resultater
