@@ -1,7 +1,6 @@
-#from asyncio.windows_events import NULL
-from datetime import date
 import sqlite3
-import os
+from os import getcwd
+from datetime import date
 
 
 def add_tasting(connection, cursor):
@@ -169,9 +168,9 @@ def filter_descriptions(cursor, key):
         INNER JOIN Kaffebrenneri
         ON Kaffe.kaffebrenneriId = Kaffebrenneri.Id
         
-        WHERE Kaffe.Beskrivelse LIKE '%{0}%'
-        OR Kaffesmaking.Smaksnotater LIKE '%{0}%'
-    """.format(key))
+        WHERE Kaffe.Beskrivelse LIKE ?
+        OR Kaffesmaking.Smaksnotater LIKE ?
+    """, ["%" + key + "%", "%" + key + "%"])
 
 
 def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
@@ -196,13 +195,14 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
         INNER JOIN Foredlingsmetode
         ON Kaffeparti.ForedlingsmetodeId = Foredlingsmetode.Id
         
-        WHERE (Land.Navn LIKE '{0}' OR Land.Navn LIKE '{1}' OR Land.Navn LIKE '{2}')
-        AND Foredlingsmetode.Navn NOT LIKE '{3}' AND Foredlingsmetode.Navn NOT LIKE '{4}' AND Foredlingsmetode.Navn NOT LIKE '{5}' 
-    """.format(country1, country2, country3, method1, method2, method3))
+        WHERE (Land.Navn = ? OR Land.Navn = ? OR Land.Navn = ?)
+        AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ?
+    """, (country1, country2, country3, method1, method2, method3))
+
 
 def main():
 
-    con = sqlite3.connect(f"{os.getcwd()}/kaffe.db")
+    con = sqlite3.connect(f"{getcwd()}/kaffe.db")
     cursor = con.cursor()
 
     print("""Velg mellom en av følgende handlinger:\n
