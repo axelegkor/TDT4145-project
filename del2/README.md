@@ -10,7 +10,27 @@
 Applikasjonen startes ved å kjøre python filen `sql.py`. Ved oppstart vil bruker bli spurt om å skrive inn et tall mellom 1 og 5, der tallet tilsvarer hvilken brukerhistorie h*n ønsker å kjøre.
 
 ### Brukerhistorie 1
+> Input fra bruker:
+>   - Epost og passord 	
+>   - Kaffebrenneri 	
+>   - Kaffenavn 	
+>   - Poeng 	
+>   - Smaksnotat 	
+>   - Smaksdato 
 
+Brukerhistorie 1 starter ved at du taster inn `1` når programmet starter. Deretter blir du bedt om å logge inn ved hjelp av **Epost** og **Passord**.  Her har vi antatt at bruker må logge inn med en epost som finnes i databasen, med tilhørende passord. Ved feil passord, avsluttes programmet og man må starte på nytt. Dersom en bruker ikke finnes i databasen fra før, blir brukeren spurt om den vil lage en bruker eller avslutte programmet. Hvis brukeren lager en bruker, skal **Epost, Passord, Fornavn og Etternavn** settes inn, og det blir lagt til databasen. 
+
+Så blir brukeren bedt om å taste inn **Kaffebrenneri**. Dersom brenneriet ikke eksisterer i databasen, avsluttes programmet, ellers returenes kaffebrenneri-Id.  
+
+Deretter bes brukeren taste inn **Kaffenavn** (LEGG TIL BILDE HER). Det sjekkes om den oppgitte kaffeen er brent av det oppgitte kaffeberenneriet. Dersom det ikke er det, avsluttes programmet. 
+
+Så skal bruker oppgi hvor mange **Poeng** den vil gi kaffeen (og det sjekkes at poeng er mellom 1 og 10). 
+
+Vi antar også at en bruker skal velge **Smaksdato**, men dersom den trykker enter, blir smaksdato satt til dagens dato ved hjelp av datetime-biblioteket i Python, i stedet for at det skal være NULL. 
+
+Når alt av input er kommet inn, skal all info settes inn i `Kaffesmaking`-tabellen i databasen ved hjelp av følgende kode: (LEGG BILDE HER) 
+
+Riktig kaffesmakings-Id finner vi å inkrementere største Id-en i  `Kaffesmaking`. Til slutt printes den opprettede kaffesmakingen til brukeren. 
 
 
 ### Brukerhistorie 2
@@ -22,28 +42,20 @@ Dersom bruker skriver inn `2` ved oppstart vil vår løsning på brukerhistorie 
 Dersom bruker skriver inn `3` ved oppstart vil vår løsning på brukerhistorie 3 kjøre. Dette innebærer å kjøre SQL-spørringen nedenfor gjennom funksjonen `best_deal()`, som deretter blir skrevet ut i et ryddig format til bruker.
 
 ### Brukerhistorie 4
+> Input fra bruker:
+> - Nøkkel (søkeord)
 
+Brukerhistorie 4 starter man ved å taste inn `4` ved begynnelsen av programmet. Her blir brukeren først bedt om å tasten inn et **søkeord**. Vi bruker `SELECT DISTINCT` for å unngå å få likt resultat flere ganger. Deretter bruker vi  inner joins mellom tabeller `Kaffe` og `Kaffesmaking` og deretter `Kaffebrenneri`. Så filtrere vi tabellen på hvor enten Kaffebeskrivelse eller Kaffesmakingsnotater (som er attributter i henholdsvis Kaffe og Kaffesmaking) inneholder det oppgitte søkeordet. Brukeren får da en liste over alle kaffer og hvilket brenneri de er brent av. Dersom ingen kaffer eller kaffesmakinger inneholder søkeordet, printes ingenting ut til bruker. 
 
+For å få resultet som er beskrevet i oppgaveteksten, skriver man «floral» ved input av søkeord. 
 
 ### Brukerhistorie 5
+> Input fra bruker: 
+> - Fra ett til tre land
+> - Fra én til tre foredlingsmetoder
 
+For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet. Først tar programmet inn ett eller tre **Land** som input fra bruker og deretter én eller tre **Foredlingsmetoder**. Så velger vi brennerinavn og kaffe navn fra `Kaffebrenneri` og `Kaffe`. Vi starter med å ta inner join mellom Kaffebrenneri og Kaffe, så med Kaffeparti, Gård, Region, Land og til slutt med Foredlingsmetode. Deretter filtrere vi på de ønskede land(a) som ikke har de/den oppgitte foredingsmetoden(e). Til slutt printes en liste av kaffen og hvilket brenneri det er brent av. 
+
+Man må taste inn `Rwanda, Colombia` på land-input og `Vasket` på foredlingsmetoder-input for å få resultatene beskrevet av brukerhistorien i oppgaveteksten. 
 
 ## Resultater
-
-### Brukerhistorie 1
-
-
-
-### Brukerhistorie 2
-
-
-
-### Brukerhistorie 3
-
-
-
-### Brukerhistorie 4
-
-
-
-### Brukerhistorie 5
