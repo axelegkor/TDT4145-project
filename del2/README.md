@@ -81,3 +81,6 @@ Slik det er beskrevet i oppgavebeskrivelsen, vil brukeren taste inn søkerdet "f
 ![Resultat fra brukerhistorie 4](./resultat_bilder/brukerhistorie4.png)
 
 ### Resultat fra brukerhistorie 5
+I oppgaveteskten øsnker brukeren å finne kaffer som ikke er vasket (foredlingsmetode) og som kommer fra Rwanda og Colombia. Etter å taste inn `5`, taster man inn landene **Rwanda** og **Colombia**, og på foredlingsmetode **Vasket**: 
+
+![Resultat fra brukerhistorie 5](./resultat_bilder/brukerhistorie5.png)
