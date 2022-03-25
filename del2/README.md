@@ -1,10 +1,5 @@
 # Prosjektoppgave i TDT4145
 
-
-## Konvensjoner
-
-:TODO: skriv om sql konvensjoner 
-
 ## Beskrivelser
 
 Applikasjonen startes ved å kjøre python filen `sql.py`. Ved oppstart vil bruker bli spurt om å skrive inn et tall mellom 1 og 5, der tallet tilsvarer hvilken brukerhistorie h*n ønsker å kjøre.
@@ -80,8 +75,8 @@ ON Kaffe.Id = Kaffesmaking.KaffeId
 INNER JOIN Kaffebrenneri
 ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
 
-GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
-ORDER BY Gjennomsnitt/Pris DESC
+GROUP BY Kaffe.Id
+ORDER BY Gjennomsnitt / Pris DESC
 ```
 
 ### Brukerhistorie 4
@@ -90,19 +85,20 @@ ORDER BY Gjennomsnitt/Pris DESC
 
 Brukerhistorie 4 starter man ved å taste inn `4` ved begynnelsen av programmet. Her blir brukeren først bedt om å taste inn et _søkeord_. Vi bruker `SELECT DISTINCT` for å unngå å få likt resultat flere ganger. Deretter slår vi sammen tabellene `Kaffe`, `Kaffesmaking` og `Kaffebrenneri`. Videre filtrerer vi tabellen på om enten Kaffebeskrivelse eller Kaffesmakingsnotater (som er attributter i henholdsvis Kaffe og Kaffesmaking) inneholder det oppgitte søkeordet. Brukeren får da en liste over alle kaffer og hvilket brenneri de er brent av. Dersom ingen kaffer eller kaffesmakinger inneholder søkeordet, printes ingenting ut til bruker.
 
-For å få resultet som er beskrevet i brukerhistorie 4, skriver en «floral» ved input av søkeord. 
+For å få resultet som er beskrevet i brukerhistorie 4, skriver en «floral» ved input av søkeord. Legg også merke til at koden under er python, og ikke ren SQL.
 
 SQL-spørring:
-```SQL
-SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
+```py
+"""SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
 
 FROM Kaffe INNER JOIN Kaffesmaking
 ON Kaffe.Id = Kaffesmaking.KaffeId
 INNER JOIN Kaffebrenneri
 ON Kaffe.kaffebrenneriId = Kaffebrenneri.Id
 
-WHERE Kaffe.Beskrivelse LIKE '%{0}%'
-OR Kaffesmaking.Smaksnotater LIKE '%{0}%'
+WHERE Kaffe.Beskrivelse LIKE ?
+OR Kaffesmaking.Smaksnotater LIKE ?
+""", ["%" + key + "%", "%" + key + "%"]
 ```
 
 ### Brukerhistorie 5
@@ -112,10 +108,11 @@ OR Kaffesmaking.Smaksnotater LIKE '%{0}%'
 
 For å kjøre brukerhistorie 5, taster man inn `5` ved begynnelsen av programmet, som kjører `filter_methods_and_countries()`. Først tar programmet inn ett eller tre _land_ som input fra bruker, og deretter én eller tre _foredlingsmetoder_. Vi velger ut brennerinavn og kaffenavn fra `Kaffebrenneri` og `Kaffe`, og starter med å slå sammen tabellene `Kaffebrenneri`, `Kaffe`, `Kaffeparti`, `Gård`, `Region`, `Land` og til slutt `Foredlingsmetode`. Deretter filtrere vi på de ønskede land(ene) som ikke har de/den oppgitte foredingsmetoden(e). Her antar vi skal oppgi kaffer fra de landene som ikke har de oppgitte foredlingsmetodene, altså at det ikke skal være samme kaffe som kommer fra f.eks. Rwanda og Colombia og som ikke har oppgitt foredlingsmetode, men at kaffene kan være forskjellige fra de oppgite landa. Til slutt skrives ut en liste av kaffen og hvilket brenneri det er brent av på et ryddig format. 
 
-For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rwanda" og "Colombia" på land-input og "Vasket" på foredlingsmetoder-input. 
+For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rwanda" og "Colombia" på land-input og "Vasket" på foredlingsmetoder-input. Legg merke til at koden under er python, og ikke ren SQL.
 
 SQL-spørring:
-```SQL
+```py
+"""
 SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
 
 FROM Kaffebrenneri INNER JOIN Kaffe
@@ -131,8 +128,9 @@ ON Region.LandId = Land.Id
 INNER JOIN Foredlingsmetode
 ON Kaffeparti.ForedlingsmetodeId = Foredlingsmetode.Id
 
-WHERE (Land.Navn LIKE '{0}' OR Land.Navn LIKE '{1}' OR Land.Navn LIKE '{2}')
-AND Foredlingsmetode.Navn NOT LIKE '{3}' AND Foredlingsmetode.Navn NOT LIKE '{4}' AND Foredlingsmetode.Navn NOT LIKE '{5}'
+WHERE (Land.Navn = ? OR Land.Navn = ? OR Land.Navn = ?)
+AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ?
+""", (country1, country2, country3, method1, method2, method3)
 ```
 
 ## Resultater
