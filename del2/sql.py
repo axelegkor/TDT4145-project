@@ -1,6 +1,7 @@
 #from asyncio.windows_events import NULL
 from datetime import date
 import sqlite3
+import os
 
 
 def add_tasting(connection, cursor):
@@ -40,11 +41,11 @@ def add_tasting(connection, cursor):
             surname = input("Hva er etternavnet ditt? ")
             new_pw = input("Oppgi et passord: ")
             cursor.execute("INSERT INTO Bruker VALUES (?,?,?,?)",
-                (usr_epost, first_name, surname, new_pw))
+                           (usr_epost, first_name, surname, new_pw))
             connection.commit()
 
-            cursor.execute("SELECT * FROM Bruker WHERE Epost = :Epost", 
-                {"Epost": usr_epost})
+            cursor.execute("SELECT * FROM Bruker WHERE Epost = :Epost",
+                           {"Epost": usr_epost})
             new_usr = cursor.fetchone()
             print("Denne brukeren er nå lagt til databasen: " + str(new_usr) + "\n")
         else:
@@ -94,7 +95,8 @@ def add_tasting(connection, cursor):
         print("Du må oppgi kaffenotater.\n")
         return
 
-    date_tasted = input("Når smakte du kaffen (trykk enter for i dag)? (dd.mm.åååå) ")
+    date_tasted = input(
+        "Når smakte du kaffen (trykk enter for i dag)? (dd.mm.åååå) ")
 
     # Sets the tasting date to today
     if date_tasted == "":
@@ -110,7 +112,7 @@ def add_tasting(connection, cursor):
     # Print last added element
     cursor.execute("SELECT * FROM Kaffesmaking")
     last_added = cursor.fetchall()
-    print(last_added[len(last_added) - 1])
+    print(last_added[-1])
 
     connection.commit()
 
@@ -132,7 +134,7 @@ def tasted_count(cursor):
 
         WHERE Kaffesmaking.Smaksdato LIKE '%{date.today().year}%'
         
-        GROUP BY Bruker.Fornavn, Bruker.Etternavn
+        GROUP BY Bruker.Epost
         ORDER BY Antall DESC
     """)
 
@@ -212,7 +214,7 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
 
 def main():
 
-    con = sqlite3.connect("/Applications/TDT4145/TDT4145_Prosjekt/del2/kaffe.db")
+    con = sqlite3.connect(f"{os.getcwd()}/kaffe.db")
     cursor = con.cursor()
 
     print("""Velg mellom en av følgende handlinger:\n
