@@ -151,7 +151,7 @@ def best_deal(cursor):
         ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
         
         GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
-        ORDER BY Gjennomsnitt/Pris DESC 
+        ORDER BY Gjennomsnitt/Pris DESC
     """)
 
 
