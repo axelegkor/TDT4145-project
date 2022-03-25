@@ -60,13 +60,18 @@ For å få resultatet som er beskrevet i brukerhistorie 5, kan en skrive inn "Rw
 
 ## Resultater
 
+### Resultat fra brukerhistorie 1
+Her taster man inn slik som vist på bildet, og til slutt printes det som ble lagt til:
+
+![Brukerhistorie 1](./resultat_bilder/brukerhistorie1.png)
+
 ### Resultat fra brukerhistorie 2 
 Her bare starter man python-koden og trykekr `2`. Slik ser resultatet ut:
 
 ![Bukerhistorie 2](./resultat_bilder/brukerhistorie2.png)
 
 ### Resultat fra brukerhistorie 3
-På brukerhistorie 3 tenger du også å bare taste inn `3`ved oppstart av programmet. Her er resultat for brukerhistorie 3:
+På brukerhistorie 3 tenger du også å bare taste inn `3` ved oppstart av programmet. Her er resultat for brukerhistorie 3:
 
 ![Brukerhistorie 3](./resultat_bilder/brukerhistorie3.png)
 
