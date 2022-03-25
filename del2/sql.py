@@ -157,8 +157,8 @@ def best_deal(cursor):
         INNER JOIN Kaffebrenneri
         ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
         
-        GROUP BY Kaffe.Id
-        ORDER BY Gjennomsnitt / Pris DESC 
+        GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
+        ORDER BY Gjennomsnitt/Pris DESC 
     """)
 
 
@@ -214,7 +214,7 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
 
 def main():
 
-    con = sqlite3.connect(f"{os.getcwd()}/kaffe.db")
+    con = sqlite3.connect("/Applications/TDT4145/TDT4145_Prosjekt/del2/kaffe.db")
     cursor = con.cursor()
 
     print("""Velg mellom en av følgende handlinger:\n
