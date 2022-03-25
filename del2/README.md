@@ -21,13 +21,24 @@ Brukerhistorie 1 starter ved at du taster inn `1` når programmet starter, som k
 
 Så blir brukeren bedt om å taste inn **Kaffebrenneri**. Dersom brenneriet ikke eksisterer i databasen, avsluttes programmet, ellers returenes kaffebrenneri-Id.  
 
-Deretter bes brukeren taste inn **Kaffenavn** (LEGG TIL BILDE HER). Det sjekkes om den oppgitte kaffeen er brent av det oppgitte kaffeberenneriet. Dersom det ikke er det, avsluttes programmet. 
+Deretter bes brukeren taste inn **Kaffenavn**. Det sjekkes om den oppgitte kaffeen er brent av det oppgitte kaffeberenneriet. Dette gjøres ved en SQL-spørring som forsøker å finne kaffenavnet:
+```
+cursor.execute("SELECT Epost from Bruker WHERE Epost = :Epost", 
+    {"Epost": usr_epost})
+result_user_epost = cursor.fetchone()
+```
+Så sjekkes det om denne er satt med en if-setning (de andre oppgite verdiene undersøkes på like måte). Dersom det ikke er det, avsluttes programmet.
 
 Så skal bruker oppgi hvor mange **Poeng** den vil gi kaffeen (og det sjekkes at poeng er mellom 1 og 10). 
 
 Vi antar også at brukeren ikke skal velge **Smaksdato** selv fordi det er ikke spesifisert som input i oppgavebeskrivelsen. Derfor blir smaksdato satt til dagens dato ved hjelp av datetime-biblioteket i Python, i stedet for at det skal være NULL. 
 
-Når alt av input er kommet inn, skal all info settes inn i `Kaffesmaking`-tabellen i databasen ved hjelp av følgende kode: (LEGG BILDE HER) 
+Når alt av input er kommet inn, skal all info settes inn i `Kaffesmaking`-tabellen i databasen ved hjelp av følgende kode:
+```
+cursor.execute("INSERT INTO Kaffesmaking VALUES (?,?,?,?,?,?)",
+        (new_tasting_id, notes, points, date_tasted, usr_epost, coffee_id))
+connection.commit()
+```
 
 Riktig kaffesmakings-Id finner vi å inkrementere største Id-en i  `Kaffesmaking`. Til slutt printes den opprettede kaffesmakingen til brukeren. 
 
