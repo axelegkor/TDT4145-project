@@ -1,5 +1,7 @@
 # from asyncio.windows_events import NULL
+from datetime import date
 import sqlite3
+
 
 # User story 1
 def add_tasting(connection, cursor):
@@ -87,14 +89,18 @@ def add_tasting(connection, cursor):
         print("Du må oppgi kaffenotater.\n")
         return
 
-    date = input("Når smakte du kaffen? (dd.mm.åååå) ")
+    date_tasted = input("Når smakte du kaffen (trykk enter for i dag)? (dd.mm.åååå) ")
+
+    # Sets the tasting date to today
+    if date_tasted == "":
+        date_tasted = date.today().strftime("%d.%m.%Y")
 
     cursor.execute("SELECT MAX(Id) FROM Kaffesmaking")
     new_tasting_id = cursor.fetchone()[0] + 1
 
     cursor.execute(
         "INSERT INTO Kaffesmaking VALUES (?,?,?,?,?,?)",
-        (new_tasting_id, notes, points, date, usr_epost, coffee_id))
+        (new_tasting_id, notes, points, date_tasted, usr_epost, coffee_id))
 
     # Print last added element
     cursor.execute("SELECT * FROM Kaffesmaking")
@@ -220,7 +226,7 @@ def main():
         methodexcluded = input(
             "Velg opp til tre foredlingsmetoder å ekskludere (på formatet: Metode1, Metode2, Metode3): ")
         countriesList = countries.split(", ")
-        
+
         for i in range(3-len(countriesList)):
             countriesList.append(None)
 
