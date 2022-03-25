@@ -60,7 +60,6 @@ def add_tasting(connection, cursor):
 
     if result_roastery:
         roastery_id = result_roastery[0]
-        print("Brenneri-ID er: " + str(roastery_id))
         print(roastery + " er gyldig.\n")
     else:
         print(roastery + " eksisterer ikke i databasen.")
@@ -75,8 +74,6 @@ def add_tasting(connection, cursor):
 
     if result_coffee_name:
         coffee_id = result_coffee_name[0]
-
-        print("Kaffe-ID er: " + str(coffee_id))
         print(coffee_name + " er gyldig.\n")
     else:
         print(
@@ -95,12 +92,8 @@ def add_tasting(connection, cursor):
         print("Du må oppgi kaffenotater.\n")
         return
 
-    date_tasted = input(
-        "Når smakte du kaffen (trykk enter for i dag)? (dd.mm.åååå) ")
-
     # Sets the tasting date to today
-    if date_tasted == "":
-        date_tasted = date.today().strftime("%d.%m.%Y")
+    date_tasted = date.today().strftime("%d.%m.%Y")
 
     cursor.execute("SELECT MAX(Id) FROM Kaffesmaking")
     new_tasting_id = cursor.fetchone()[0] + 1
@@ -108,13 +101,13 @@ def add_tasting(connection, cursor):
     cursor.execute(
         "INSERT INTO Kaffesmaking VALUES (?,?,?,?,?,?)",
         (new_tasting_id, notes, points, date_tasted, usr_epost, coffee_id))
+    connection.commit()
 
     # Print last added element
     cursor.execute("SELECT * FROM Kaffesmaking")
     last_added = cursor.fetchall()
-    print(last_added[-1])
+    print("Denne smakingen er lagt til i databasen:", last_added[-1])
 
-    connection.commit()
 
 
 def tasted_count(cursor):
@@ -209,8 +202,6 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
         
     
     """.format(country1, country2, country3, method1, method2, method3))
-    # AND (Foredlingsmetode.Beskrivelse!=%s AND Foredlingsmetode.Beskrivelse!=%s AND Foredlingsmetode.Beskrivelse!=%s)
-
 
 def main():
 
@@ -241,7 +232,7 @@ def main():
             print(i[1], "brent av", i[0] + ":", i[2], "NOK,", i[3], "poeng")
 
     elif choice == 4:
-        key = input("Søk: ")
+        key = input("Hvilket ord ønsker du å søke etter? ")
         us4 = filter_descriptions(cursor, key).fetchall()
         for i in us4:
             print(i[1], "brent av", i[0])
