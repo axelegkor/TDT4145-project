@@ -3,13 +3,8 @@ from os import getcwd
 from datetime import date
 
 
+# User story 1
 def add_tasting(connection, cursor):
-    """User story 1
-
-    :param cursor
-    :return
-    """
-
     # Login info
     usr_epost = input("Hva er eposten din? ")
     usr_pw = input("Hva er passordet ditt? ")
@@ -108,13 +103,8 @@ def add_tasting(connection, cursor):
     print("Denne smakingen er lagt til i databasen:", last_added[-1])
 
 
-
+# User story 2
 def tasted_count(cursor):
-    """User story 2
-
-    :param cursor
-    :return
-    """
     return cursor.execute(f"""
         SELECT
         Bruker.Fornavn,
@@ -131,35 +121,27 @@ def tasted_count(cursor):
     """)
 
 
+# User story 3
 def best_deal(cursor):
-    """User story 3
-
-    :param cursor
-    :return
-    """
     return cursor.execute("""
         SELECT
         Kaffebrenneri.Navn AS Brennerinavn,
         Kaffe.Navn AS Kaffenavn,
         Kaffe.KiloprisNOK AS Pris,
         AVG(Kaffesmaking.Poeng) AS Gjennomsnitt
-        
+
         FROM Kaffe INNER JOIN Kaffesmaking
         ON Kaffe.Id = Kaffesmaking.KaffeId
         INNER JOIN Kaffebrenneri
         ON Kaffe.KaffebrenneriId = Kaffebrenneri.Id
-        
-        GROUP BY Kaffebrenneri.Navn, Kaffe.Navn
-        ORDER BY Gjennomsnitt/Pris DESC
+ 
+        GROUP BY Kaffe.Id
+        ORDER BY Gjennomsnitt / Pris DESC
     """)
 
 
+# User story 4
 def filter_descriptions(cursor, key):
-    """User story 4
-
-    :param cursor
-    :return
-    """
     return cursor.execute("""
         SELECT DISTINCT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
         
@@ -173,12 +155,8 @@ def filter_descriptions(cursor, key):
     """, ["%" + key + "%", "%" + key + "%"])
 
 
+# User story 5
 def filter_methods_and_countries(cursor, country1, country2, country3, method1, method2, method3):
-    """User story 5
-
-    :param cursor
-    :return
-    """
     return cursor.execute(""" 
         SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
 
@@ -197,7 +175,7 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
         
         WHERE (Land.Navn = ? OR Land.Navn = ? OR Land.Navn = ?)
         AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ? AND Foredlingsmetode.Navn != ?
-    """, (country1, country2, country3, method1, method2, method3))
+    """, (str(country1 or ""), str(country2 or ""), str(country3 or ""), str(method1 or ""), str(method2 or ""), str(method3 or "")))
 
 
 def main():
