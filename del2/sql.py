@@ -12,8 +12,8 @@ def add_tasting(connection, cursor):
     """
 
     # Login info
-    usr_epost = input("Hva er din e-mail? ")
-    usr_pw = input("Hva er ditt passord? ")
+    usr_epost = input("Hva er eposten din? ")
+    usr_pw = input("Hva er passordet ditt? ")
 
     # Handle if user does not exist
     cursor.execute("SELECT Epost from Bruker WHERE Epost = :Epost", {
@@ -77,7 +77,7 @@ def add_tasting(connection, cursor):
         print(coffee_name + " er gyldig.\n")
     else:
         print(
-            "Kaffenavn eksisterer ikke i databasen eller kaffebrenneri-ID stemmer ikke overens med kaffenavn.\n")
+            "Kaffenavn eksisterer ikke i databasen eller kaffebrenneriId stemmer ikke overens med kaffenavn.\n")
         return
 
     points = int(input("Hvor mange poeng vil du gi kaffen? "))
@@ -180,8 +180,7 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
     :param cursor
     :return
     """
-    return cursor.execute("""
-    
+    return cursor.execute(""" 
         SELECT Kaffebrenneri.Navn AS Brennerinavn, Kaffe.Navn AS Kaffenavn
 
         FROM Kaffebrenneri INNER JOIN Kaffe
@@ -198,14 +197,12 @@ def filter_methods_and_countries(cursor, country1, country2, country3, method1, 
         ON Kaffeparti.ForedlingsmetodeId = Foredlingsmetode.Id
         
         WHERE (Land.Navn LIKE '{0}' OR Land.Navn LIKE '{1}' OR Land.Navn LIKE '{2}')
-        AND Foredlingsmetode.Navn NOT LIKE '{3}' AND Foredlingsmetode.Navn NOT LIKE '{4}' AND Foredlingsmetode.Navn NOT LIKE '{5}'
-        
-    
+        AND Foredlingsmetode.Navn NOT LIKE '{3}' AND Foredlingsmetode.Navn NOT LIKE '{4}' AND Foredlingsmetode.Navn NOT LIKE '{5}' 
     """.format(country1, country2, country3, method1, method2, method3))
 
 def main():
 
-    con = sqlite3.connect("/Applications/TDT4145/TDT4145_Prosjekt/del2/kaffe.db")
+    con = sqlite3.connect(f"{os.getcwd()}/kaffe.db")
     cursor = con.cursor()
 
     print("""Velg mellom en av følgende handlinger:\n
