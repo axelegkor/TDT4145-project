@@ -220,12 +220,13 @@ def main():
         methodexcluded = input(
             "Velg opp til tre foredlingsmetoder å ekskludere (på formatet: Metode1, Metode2, Metode3): ")
         countriesList = countries.split(", ")
+        
         for i in range(3-len(countriesList)):
-            countriesList.append(NULL)
+            countriesList.append(None)
 
         methodexcludedList = methodexcluded.split(", ")
         for i in range(3-len(methodexcludedList)):
-            methodexcludedList.append(NULL)
+            methodexcludedList.append(None)
 
         us5 = filter_methods_and_countries(
             cursor, countriesList[0], countriesList[1], countriesList[2], methodexcludedList[0], methodexcludedList[1], methodexcludedList[2]).fetchall()
